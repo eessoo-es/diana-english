@@ -37,14 +37,22 @@ body {
   font-size: 16px;
   font-weight: 400;
   color: var(--muted);
-  line-height: normal;
+  line-height: 22px;
+  height: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-title {
   font-size: 16px;
   font-weight: 400;
   color: var(--text);
-  line-height: normal;
+  line-height: 22px;
+  height: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── PRONUNCIATION CARD ── */
