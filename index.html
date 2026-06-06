@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diana Tereshchenko — English Teacher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=9" />
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="site-header">
+    <div class="header-col">
+      <p class="header-name">Диана Терещенко</p>
+      <p class="header-title">Преподаватель английского языка · Языковой коуч</p>
+    </div>
+    <div class="header-col">
+      <p class="header-name">Diana Tereshchenko</p>
+      <p class="header-title">English Teacher · Language Coach</p>
+    </div>
+  </header>
+
+  <!-- ── PRONUNCIATION CARD ── -->
+  <section class="prono-section">
+    <div class="prono-card">
+
+      <div class="prono-photo-wrap" id="photoWrap">
+        <img src="Unknown.png" alt="Diana" class="diana-fg" id="dianaImg" />
+        <canvas class="stretch-canvas" id="stretchCanvas"></canvas>
+      </div>
+
+      <div class="prono-form">
+        <p class="prono-title">Let's hear it</p>
+        <p class="prono-desc">Если вы не уверены в произношении, просто введите слово или фразу ниже. Я произнесу их для вас.</p>
+
+        <div class="prono-input-wrap">
+          <textarea
+            id="phraseInput"
+            class="prono-textarea"
+            placeholder="For ex.: comfortable, I'd rather not..."
+          ></textarea>
+          <button class="btn-listen" id="listenBtn" onclick="speakPhrase()">Слушать</button>
+        </div>
+
+        <div class="prono-result" id="pronoResult">
+          <p class="result-translation" id="resultTranslation"></p>
+          <p class="result-status" id="resultStatus"></p>
+        </div>
+
+        <div class="prono-footer">
+          <div class="prono-powered">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+            </svg>
+            Powered by my voice
+          </div>
+          <button class="btn-random" id="randomBtn" onclick="speakRandom()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polyline points="16 3 21 3 21 8"/>
+              <path d="M4 20l7-7M21 3l-7 7"/>
+              <polyline points="4 4 9 4 9 9"/>
+              <path d="M15 15l6 6"/>
+            </svg>
+            Surprise me
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section class="about">
+    <div class="two-col">
+      <div class="col">
+        <p>Язык меняет не только то, как мы говорим.&nbsp;<br>Он меняет то, как мы живём.</p>
+        <p>Через язык мы знакомимся с людьми, понимаем другие культуры, находим своё место в новых странах и открываем возможности, которые раньше казались недоступными.</p>
+        <p>Мне всегда было интересно не столько преподавать английский, сколько наблюдать за тем, как меняется человек, когда язык перестаёт быть препятствием и становится частью его жизни.</p>
+        <p>Я училась в США и Гонконге, жила в Южной Африке, работала с международными командами и каждый раз убеждалась в одной простой вещи: язык гораздо больше, чем слова и правила.<br>Это уверенность, свобода и любопытство к миру.</p>
+        <p>Сегодня я работаю с людьми, для которых английский не очередной пункт в списке задач, а инструмент для жизни. Кто-то готовится к переезду. Кто-то выходит на международный рынок. Кто-то хочет свободно чувствовать себя в путешествиях. А кто-то просто давно мечтает говорить на иностранном языке.</p>
+        <p>Мне нравится помогать людям находить собственный путь к языку.</p>
+      </div>
+      <div class="col">
+        <p>Language changes more than the way we speak.<br>It changes the way we live.</p>
+        <p>Through language, we meet people, understand different cultures, find our place in new countries, and discover opportunities that once felt out of reach.</p>
+        <p>What has always fascinated me is not just teaching English, but seeing how people change when language stops being an obstacle and becomes a natural part of their lives.</p>
+        <p>I studied in the United States and Hong Kong, lived in South Africa, and worked with international teams. Each experience reinforced one simple idea: language is so much more than words and grammar. It is confidence, freedom, and curiosity about the world.</p>
+        <p>Today, I work with people who see English not as another task on their to-do list, but as a tool for life. Some are preparing for a move abroad. Some are expanding into international markets. Some want to feel more comfortable while traveling. And some have simply dreamed for years of making English a natural part of their lives.</p>
+        <p>I enjoy helping people find their own path to language learning.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PLACES ── -->
+  <div class="places-wrap">
+    <div class="places-track">
+      <div class="place-item">
+        <span class="place-label">USA</span>
+        <div class="place-card">
+          <span class="place-emoji">🎓</span>
+          <span class="place-text">Училась в 2016</span>
+        </div>
+      </div>
+      <span class="dot">·</span>
+      <div class="place-item">
+        <span class="place-label">Hong Kong</span>
+        <div class="place-card">
+          <span class="place-emoji">🌏</span>
+          <span class="place-text">Училась в 2017</span>
+        </div>
+      </div>
+      <span class="dot">·</span>
+      <div class="place-item">
+        <span class="place-label">South Africa</span>
+        <div class="place-card">
+          <span class="place-emoji">🦁</span>
+          <span class="place-text">Жила и работала</span>
+        </div>
+      </div>
+      <span class="dot">·</span>
+      <div class="place-item">
+        <span class="place-label">IELTS</span>
+        <div class="place-card">
+          <span class="place-emoji">📝</span>
+          <span class="place-text">Результат IELTS — 7.5</span>
+        </div>
+      </div>
+      <span class="dot">·</span>
+      <div class="place-item">
+        <span class="place-label">Pitch It!</span>
+        <div class="place-card">
+          <span class="place-emoji">🎤</span>
+          <span class="place-text">Соавтор программы по подготовке бизнес-презентаций для предпринимателей и руководителей</span>
+        </div>
+      </div>
+      <span class="dot">·</span>
+      <div class="place-item">
+        <span class="place-label">Moscow Export Center</span>
+        <div class="place-card">
+          <span class="place-emoji">🏛</span>
+          <span class="place-text">Работала с предпринимателями Московского экспортного центра</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CURRENT ── -->
+  <section class="current">
+    <div class="two-col">
+      <p class="col">Сейчас я работаю с <span class="hl">предпринимателями, специалистами и студентами.</span> Готовлю к <span class="hl">IELTS</span>, помогаю с <span class="hl">профессиональной коммуникацией, выступлениями и переговорами</span> на английском языке.</p>
+      <p class="col">Today, I work with <span class="hl">entrepreneurs, professionals, and students.</span> I prepare students for <span class="hl">IELTS</span> and help with <span class="hl">professional communication, presentations, and negotiations</span> in English.</p>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section class="services">
+    <div class="two-col services-intro-row">
+      <p class="services-intro">Почти всегда моя работа начинается не с вопроса «Какой у вас уровень?», а с вопроса <span class="hl">«Зачем вам язык и какое место вы хотите, чтобы он занимал в вашей жизни?»</span></p>
+      <p class="services-intro">Almost always, my work begins not with the question "What is your level?", but with the question <span class="hl">"Why do you need a language and what place do you want it to take in your life?"</span></p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Жить / Life</h3>
+        <p>Для путешествий, общения, переезда и повседневной уверенности в языке</p>
+      </div>
+      <div class="service-card">
+        <h3>Работать / Work</h3>
+        <p>Для встреч, переговоров, презентаций, интервью и международных команд</p>
+      </div>
+      <div class="service-card">
+        <h3>Сдать IELTS</h3>
+        <p>Конкретный результат и системная подготовка</p>
+      </div>
+      <div class="service-card">
+        <h3>Исследовать / Explore</h3>
+        <p>Собственный подход к изучению языка и желание встроить его в свою жизнь</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── START ── -->
+  <section class="start-section">
+    <div class="start-head">
+      <p class="start-title">Не знаете, с чего начать?</p>
+      <p class="start-sub">Обычно все начинается с разговора</p>
+    </div>
+    <a href="https://t.me/Diana_ter" target="_blank" class="start-tg">Написать в Telegram ↗</a>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2026 Диана Терещенко, английский язык и языковой коучинг</p>
+      <p class="footer-inn">ИНН 2536-1121-4859</p>
+    </div>
+  </footer>
+
+  <script>
+    const ELEVENLABS_API_KEY = "sk_c0e678b619960910cc8ff6af7e4b3f538d8031aeb59896e1";
+    const ELEVENLABS_VOICE_ID = "QOJJ0uzf7cB0qm9cW5nO";
+  </script>
+  <script src="script.js?v=9"></script>
+</body>
+</html>
