@@ -86,7 +86,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 15%;
+  object-position: center 5%;
   display: block;
   opacity: 0;
 }
@@ -647,7 +647,7 @@ body {
   .places-wrap { padding-top: 44px; padding-bottom: 44px; padding-left: 4px; padding-right: 4px; }
   .current { padding-top: 0; }
 
-  .prono-card { grid-template-columns: 1fr; height: auto; margin: 0 8px; border-radius: 16px; }
+  .prono-card { grid-template-columns: 1fr; height: auto; margin: 0 4px; border-radius: 16px; }
   .prono-photo-wrap { min-height: 260px; border-radius: 14px 14px 0 0; }
   .prono-form { padding: 20px 20px 16px; }
   /* Remove auto-push so footer doesn't create huge gap */
@@ -661,7 +661,7 @@ body {
   .start-block { padding: 40px 0 20px; }
 
   .programs { padding-top: 64px; padding-left: 4px; padding-right: 4px; }
-  .programs-panel { border-radius: 8px; padding: calc(var(--page-pad) - 8px); }
+  .programs-panel { border-radius: 8px; padding: 12px calc(var(--page-pad) - 4px); }
   .start-block { padding: 56px 0 48px; }
 
   /* No floating TG button */
