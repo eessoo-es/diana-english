@@ -296,8 +296,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  min-width: 180px;
-  max-width: 260px;
+  width: 200px;
   white-space: normal;
   pointer-events: none;
   opacity: 0;
