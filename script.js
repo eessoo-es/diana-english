@@ -123,15 +123,23 @@ if (stretchCanvas && dianaImg) {
     // 1 — Draw image (plain cover)
     drawCover();
 
-    // 2 — Edge smear (wider strip, original strength)
+    // 2 — Radial zoom smear (circular, from Diana's face outward)
     if (s > 0.004) {
-      const strip = Math.max(2, Math.round(Math.min(cw, ch) * 0.18));
-      const push  = strip * s * 3.2;
-      ctx.globalAlpha = Math.min(1, 0.55 + s * 0.45);
-      ctx.drawImage(stretchCanvas, 0,        0,        strip, ch, -push,       0,        strip + push, ch);
-      ctx.drawImage(stretchCanvas, cw-strip, 0,        strip, ch, cw-strip,    0,        strip + push, ch);
-      ctx.drawImage(stretchCanvas, 0,        0,        cw,    strip, 0,        -push,    cw, strip + push);
-      ctx.drawImage(stretchCanvas, 0,        ch-strip, cw,    strip, 0,        ch-strip, cw, strip + push);
+      const cx = cw / 2;
+      const cy = ch * 0.28; // approx face center (object-position: 15%)
+      const steps = 10;
+      for (let i = 1; i <= steps; i++) {
+        const f     = i / steps;
+        const zoom  = 1 + s * f * 0.12;
+        const alpha = (1 - f) * 0.55 * s;
+        ctx.globalAlpha = alpha;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.scale(zoom, zoom);
+        ctx.translate(-cx, -cy);
+        ctx.drawImage(dianaImg, coverDx, coverDy, coverDw, coverDh);
+        ctx.restore();
+      }
       ctx.globalAlpha = 1;
     }
 
