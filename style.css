@@ -440,9 +440,15 @@ body {
   font-size: 16px;
   color: var(--muted);
   text-decoration: none;
-  transition: color 0.15s;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: transparent;
+  transition: color 0.2s, background 0.2s;
 }
-.start-tg:hover { color: var(--text); }
+.start-tg:hover {
+  color: #fff;
+  background: #000;
+}
 
 /* ── FOOTER ── */
 .site-footer {
