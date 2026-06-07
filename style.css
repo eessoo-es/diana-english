@@ -50,6 +50,10 @@ body {
   font-weight: 400;
   color: var(--text);
   line-height: 22px;
+  height: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── PRONUNCIATION CARD ── */

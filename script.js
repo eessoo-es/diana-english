@@ -330,9 +330,9 @@ function runIntro() {
 
   const finals = {
     leftName: leftName.textContent,
-    leftRoleHTML: leftRole.innerHTML,
+    leftRole: leftRole.textContent,
     rightName: rightName.textContent,
-    rightRoleHTML: rightRole.innerHTML,
+    rightRole: rightRole.textContent,
   };
 
   const headerTargets = [leftName, leftRole, rightName, rightRole];
@@ -347,9 +347,9 @@ function runIntro() {
     if (elapsed >= DURATION) {
       clearInterval(timer);
       leftName.textContent  = finals.leftName;
-      leftRole.innerHTML    = finals.leftRoleHTML;
+      leftRole.textContent  = finals.leftRole;
       rightName.textContent = finals.rightName;
-      rightRole.innerHTML   = finals.rightRoleHTML;
+      rightRole.textContent = finals.rightRole;
       headerTargets.forEach((el) => { el.style.opacity = "1"; });
       extraEls.forEach((el, i) => { el.innerHTML = extraOriginals[i]; el.style.opacity = "1"; });
       return;
