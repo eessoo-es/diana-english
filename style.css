@@ -633,7 +633,7 @@ body {
   }
   /* Hide redundant emoji inside card on mobile */
   .place-card .place-emoji { display: none; }
-  .place-text { font-size: 16px; color: var(--muted); }
+  .place-text { font-size: 14px; color: var(--muted); }
   .place-text br { display: none; }
 
   /* Hide desktop label (shown via place-head instead) */
@@ -657,8 +657,8 @@ body {
   .services-intro-row { margin-bottom: 24px; }
   .start-block { padding: 40px 0 20px; }
 
-  .programs { padding-top: 64px; padding-left: 8px; padding-right: 8px; }
-  .programs-panel { padding: 24px calc(var(--page-pad) - 8px); }
+  .programs { padding-top: 64px; padding-left: 0; padding-right: 0; }
+  .programs-panel { border-radius: 0; padding: 24px var(--page-pad); }
 
   /* No floating TG button */
   .tg-float { display: none; }
