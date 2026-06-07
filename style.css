@@ -358,7 +358,7 @@ body {
 
 .service-card {
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 18px 18px 20px;
   min-height: 139px;
   background: #fff;
@@ -516,7 +516,7 @@ body {
 .emoji-particle {
   position: fixed;
   pointer-events: none;
-  font-size: 32px;
+  font-size: 40px;
   line-height: 1;
   animation: emojiFloat 0.9s ease-out forwards;
   z-index: 1;

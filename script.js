@@ -253,7 +253,7 @@ function runIntro() {
   const headerTargets = [leftName, leftRole, rightName, rightRole];
   headerTargets.forEach((el) => { el.style.transition = "opacity 0.12s ease"; });
 
-  const DURATION = 2000;
+  const DURATION = 1600;
   const STEP = 110;
   const start = performance.now();
 
