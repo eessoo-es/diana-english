@@ -244,7 +244,7 @@ body {
 
 /* ── PLACES ── */
 .places-wrap {
-  padding: 100px var(--page-pad);
+  padding: 100px var(--page-pad) 0;
   overflow: visible;
 }
 
