@@ -138,11 +138,91 @@ function hoverSound() {
   } catch (e) { /* ignore */ }
 }
 
+// ── Per-card hover sounds ──
+function playCardSound(index) {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const ctx = audioCtx;
+    const now = ctx.currentTime;
+
+    if (index === 0) {
+      // Жить — тёплый мажорный перезвон C-E-G
+      [523.25, 659.25, 783.99].forEach((freq, i) => {
+        const t = now + i * 0.09;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.linearRampToValueAtTime(0.16, t + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t); osc.stop(t + 0.45);
+      });
+
+    } else if (index === 1) {
+      // Работать — два чётких "дзинь" как уведомление
+      [880, 1108].forEach((freq, i) => {
+        const t = now + i * 0.13;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.linearRampToValueAtTime(0.14, t + 0.006);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t); osc.stop(t + 0.25);
+      });
+
+    } else if (index === 2) {
+      // IELTS — взлёт вверх, как "WOW!" (fast ascending sweep)
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(260, now);
+      osc.frequency.exponentialRampToValueAtTime(980, now + 0.16);
+      osc.frequency.exponentialRampToValueAtTime(680, now + 0.28);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.2, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.42);
+
+    } else if (index === 3) {
+      // Исследовать — свист с вибрато
+      const osc = ctx.createOscillator();
+      const vibOsc = ctx.createOscillator();
+      const vibGain = ctx.createGain();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(1380, now);
+      osc.frequency.linearRampToValueAtTime(1620, now + 0.12);
+      osc.frequency.linearRampToValueAtTime(1480, now + 0.42);
+      vibOsc.frequency.value = 7;
+      vibGain.gain.setValueAtTime(0, now);
+      vibGain.gain.linearRampToValueAtTime(28, now + 0.08);
+      vibOsc.connect(vibGain);
+      vibGain.connect(osc.frequency);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.15, now + 0.06);
+      gain.gain.setValueAtTime(0.15, now + 0.28);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+      osc.connect(gain).connect(ctx.destination);
+      [osc, vibOsc].forEach(o => { o.start(now); o.stop(now + 0.52); });
+    }
+  } catch(e) { /* ignore */ }
+}
+
 // Attach hover sound to interactive elements + emoji explosions
 function attachHoverSounds() {
-  const sel = ".place-item, .service-card, #listenBtn, #randomBtn, .start-tg";
+  const sel = ".place-item, #listenBtn, #randomBtn, .start-tg";
   document.querySelectorAll(sel).forEach((el) => {
     el.addEventListener("mouseenter", hoverSound);
+  });
+  document.querySelectorAll(".service-card").forEach((card, cardIndex) => {
+    card.addEventListener("mouseenter", () => playCardSound(cardIndex));
   });
   document.querySelectorAll(".service-card").forEach((card) => {
     let emojiTimer = null;
