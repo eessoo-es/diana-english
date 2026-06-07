@@ -265,6 +265,10 @@ body {
   user-select: none;
 }
 
+.place-head {
+  display: none; /* desktop: показываем только label */
+}
+
 .place-item {
   position: relative;
   display: inline-flex;
@@ -554,21 +558,68 @@ body {
   .site-header .header-col:nth-child(2),
   .two-col > *:nth-child(2) { display: none; }
 
-  .site-header { grid-template-columns: 1fr; gap: 20px; padding-top: 24px; }
+  /* Header title smaller to fit single line */
+  .header-title { font-size: 12px; }
+  .header-name  { font-size: 14px; }
 
-  /* Places — wrap into rows */
-  .places-track { flex-wrap: wrap; justify-content: flex-start; gap: 12px 0; white-space: normal; }
+  .site-header { grid-template-columns: 1fr; gap: 8px; padding-top: 20px; }
+
+  /* Places — vertical list */
+  .places-wrap { overflow: hidden; }
+  .places-track { flex-direction: column; gap: 0; white-space: normal; }
   .dot { display: none; }
-  .place-label { font-size: 22px; }
+
+  .place-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+  }
+
+  /* Show place-head (emoji + label) on mobile */
+  .place-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .place-head .place-emoji { font-size: 20px; }
+  .place-head .place-label {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text);
+    white-space: normal;
+  }
+
+  /* Make place-card static visible as description */
+  .place-card {
+    position: static !important;
+    opacity: 1 !important;
+    transform: none !important;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    pointer-events: auto;
+    transition: none;
+    width: auto;
+  }
+  /* Hide redundant emoji inside card on mobile */
+  .place-card .place-emoji { display: none; }
+  .place-text { font-size: 13px; color: var(--muted); }
+
+  /* Hide desktop label (shown via place-head instead) */
+  .place-item > .place-label { display: none; }
 
   .prono-card { grid-template-columns: 1fr; height: auto; }
   .prono-photo-wrap { min-height: 260px; border-radius: 20px 20px 0 0; }
-  .prono-form { padding: 24px 24px 20px; }
+  .prono-form { padding: 24px 20px 20px; }
   .two-col { grid-template-columns: 1fr; gap: 24px; }
   .services-grid { grid-template-columns: 1fr 1fr; }
+  .programs { padding-left: 8px; padding-right: 8px; }
+  .programs-panel { padding: 32px calc(var(--page-pad) - 8px); }
   .tg-float { display: block; }
-
-  /* Space so content isn't hidden behind floating button */
   .site-footer { padding-bottom: 88px; }
 }
 
