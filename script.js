@@ -145,7 +145,15 @@ function attachHoverSounds() {
     el.addEventListener("mouseenter", hoverSound);
   });
   document.querySelectorAll(".service-card").forEach((card) => {
-    card.addEventListener("mouseenter", () => spawnEmojis(card));
+    let emojiTimer = null;
+    card.addEventListener("mouseenter", () => {
+      spawnOneEmoji(card);
+      emojiTimer = setInterval(() => spawnOneEmoji(card), 160);
+    });
+    card.addEventListener("mouseleave", () => {
+      clearInterval(emojiTimer);
+      emojiTimer = null;
+    });
   });
 }
 
@@ -195,6 +203,17 @@ function scrambleText(text) {
   ).join('');
 }
 
+// Scramble all text nodes inside an element (handles <br> etc.)
+function scrambleEl(el) {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.nodeValue.trim().length > 0) {
+      node.nodeValue = scrambleText(node.nodeValue);
+    }
+  }
+}
+
 function runIntro() {
   const cols = document.querySelectorAll(".site-header .header-col");
   if (cols.length < 2) return;
@@ -203,23 +222,21 @@ function runIntro() {
   const rightName = cols[1].querySelector(".header-name");
   const rightRole = cols[1].querySelector(".header-title");
 
-  // Collect extra text-only elements across the page
+  // Collect extra elements across the page (including those with <br>)
   const extraSelectors = [
-    ".prono-title", ".prono-desc",
     ".about .col p",
     ".current .col",
     ".services-intro",
-    ".service-card h3", ".service-card > p:not(.card-emojis)",
+    ".service-card h3",
+    ".service-card > p",
     ".start-title", ".start-sub",
   ];
   const extraEls = [];
-  const extraOriginals = [];
+  const extraOriginals = []; // store innerHTML to restore exactly
   extraSelectors.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => {
-      if (el.children.length === 0) {
-        extraEls.push(el);
-        extraOriginals.push(el.textContent);
-      }
+      extraEls.push(el);
+      extraOriginals.push(el.innerHTML);
     });
   });
 
@@ -246,7 +263,7 @@ function runIntro() {
       rightName.textContent = finals.rightName;
       rightRole.textContent = finals.rightRole;
       headerTargets.forEach((el) => { el.style.opacity = "1"; });
-      extraEls.forEach((el, i) => { el.textContent = extraOriginals[i]; el.style.opacity = "1"; });
+      extraEls.forEach((el, i) => { el.innerHTML = extraOriginals[i]; el.style.opacity = "1"; });
       return;
     }
     leftName.textContent  = pick(NAME_VARIANTS);
@@ -256,35 +273,31 @@ function runIntro() {
     headerTargets.forEach((el) => { el.style.opacity = (0.55 + Math.random() * 0.45).toFixed(2); });
 
     extraEls.forEach((el, i) => {
-      el.textContent = scrambleText(extraOriginals[i]);
+      el.innerHTML = extraOriginals[i]; // restore structure first
+      scrambleEl(el);                   // then scramble text nodes in-place
       el.style.opacity = (0.3 + Math.random() * 0.5).toFixed(2);
     });
   }, STEP);
 }
 
-// ── Emoji explosion on service card hover ──
-function spawnEmojis(card) {
+// ── Emoji continuous emission on service card hover ──
+function spawnOneEmoji(card) {
   const raw = card.dataset.emojis || "";
   const emojis = [...new Intl.Segmenter().segment(raw)].map(s => s.segment);
   if (!emojis.length) return;
+  const emoji = emojis[Math.floor(Math.random() * emojis.length)];
   const rect = card.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height * 0.6;
-
-  emojis.forEach((emoji, i) => {
-    const el = document.createElement("span");
-    el.className = "emoji-particle";
-    el.textContent = emoji;
-    const dx = (Math.random() - 0.5) * 140;
-    const dy = -(50 + Math.random() * 90);
-    el.style.left = cx + "px";
-    el.style.top  = cy + "px";
-    el.style.setProperty("--dx", dx + "px");
-    el.style.setProperty("--dy", dy + "px");
-    el.style.animationDelay = (i * 60) + "ms";
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 900 + i * 60);
-  });
+  const cx = rect.left + rect.width * (0.2 + Math.random() * 0.6);
+  const cy = rect.bottom - 4;
+  const el = document.createElement("span");
+  el.className = "emoji-particle";
+  el.textContent = emoji;
+  el.style.left = cx + "px";
+  el.style.top  = cy + "px";
+  el.style.setProperty("--dx", ((Math.random() - 0.5) * 100) + "px");
+  el.style.setProperty("--dy", -(50 + Math.random() * 80) + "px");
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 800);
 }
 
 // Bootstrap (works whether or not DOMContentLoaded already fired)
