@@ -644,8 +644,8 @@ body {
 
   .prono-section { padding-top: 40px; }
   .about { padding-top: 40px; }
-  .places-wrap { padding-top: 44px; }
-  .current { padding-top: 64px; }
+  .places-wrap { padding-top: 44px; padding-bottom: 44px; }
+  .current { padding-top: 0; }
 
   .prono-card { grid-template-columns: 1fr; height: auto; margin: 0 8px; border-radius: 16px; }
   .prono-photo-wrap { min-height: 260px; border-radius: 14px 14px 0 0; }
