@@ -6,6 +6,7 @@ const dianaImg = document.getElementById('dianaImg');
 let edgeIntensity = 0;
 let edgeTarget = 0;
 let edgeSpeaking = false;
+let speakBlend = 0;   // smoothly follows edgeSpeaking: 1 = full pulse, 0 = idle
 let imgReady = false;
 let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -109,16 +110,14 @@ if (stretchCanvas && dianaImg) {
     const cw = stretchCanvas.width, ch = stretchCanvas.height;
     ctx.clearRect(0, 0, cw, ch);
 
-    // Smooth intensity
+    // Smooth intensity + blend
     edgeIntensity += (edgeTarget - edgeIntensity) * 0.07;
+    speakBlend    += ((edgeSpeaking ? 1 : 0) - speakBlend) * 0.05; // slow fade in/out
 
     const t = performance.now() / 1000;
-    let s = edgeIntensity;
-    if (edgeSpeaking) {
-      // layered pulse: fast shimmer + slow swell
-      const pulse = 0.55 + 0.25 * Math.sin(t * 5.5) + 0.2 * Math.sin(t * 2.3 + 0.8);
-      s = edgeIntensity * pulse;
-    }
+    const pulse = 0.55 + 0.25 * Math.sin(t * 5.5) + 0.2 * Math.sin(t * 2.3 + 0.8);
+    // blend between pulsing (speakBlend=1) and flat (speakBlend=0) — no snap on stop
+    const s = edgeIntensity * (pulse * speakBlend + 1 * (1 - speakBlend));
 
     // 1 — Draw image (plain cover)
     drawCover();
