@@ -125,7 +125,7 @@ if (stretchCanvas && dianaImg) {
 
     // 2 — Radial zoom smear (circular, from Diana's face outward)
     if (s > 0.004) {
-      const cx = cw * 0.38; // Diana's face — slightly left of center
+      const cx = cw * 0.22; // Diana's face — closer to left edge
       const cy = ch * 0.28;
       const steps = 10;
       const zoomStr = edgeSpeaking ? 0.06 : 0.12; // softer zoom while speaking
