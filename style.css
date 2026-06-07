@@ -634,6 +634,7 @@ body {
   /* Hide redundant emoji inside card on mobile */
   .place-card .place-emoji { display: none; }
   .place-text { font-size: 16px; color: var(--muted); }
+  .place-text br { display: none; }
 
   /* Hide desktop label (shown via place-head instead) */
   .place-item > .place-label { display: none; }
