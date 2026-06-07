@@ -24,6 +24,7 @@ body {
 }
 
 .hl { color: var(--text); }
+.current .hl { color: var(--muted); font-weight: 400; }
 
 /* ── HEADER ── */
 .site-header {

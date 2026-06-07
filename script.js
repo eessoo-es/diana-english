@@ -147,70 +147,75 @@ function playCardSound(index) {
     const now = ctx.currentTime;
 
     if (index === 0) {
-      // Жить — тёплый мажорный перезвон C-E-G
+      // Жить — тёплый мажорный перезвон C-E-G с долгим затуханием
       [523.25, 659.25, 783.99].forEach((freq, i) => {
-        const t = now + i * 0.09;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.001, t);
-        gain.gain.linearRampToValueAtTime(0.16, t + 0.012);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(t); osc.stop(t + 0.45);
-      });
-
-    } else if (index === 1) {
-      // Работать — два чётких "дзинь" как уведомление
-      [880, 1108].forEach((freq, i) => {
         const t = now + i * 0.13;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = "sine";
         osc.frequency.value = freq;
         gain.gain.setValueAtTime(0.001, t);
-        gain.gain.linearRampToValueAtTime(0.14, t + 0.006);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+        gain.gain.linearRampToValueAtTime(0.16, t + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 1.1);
         osc.connect(gain).connect(ctx.destination);
-        osc.start(t); osc.stop(t + 0.25);
+        osc.start(t); osc.stop(t + 1.2);
+      });
+
+    } else if (index === 1) {
+      // Работать — два "дзинь" с долгим резонансом
+      [880, 1108].forEach((freq, i) => {
+        const t = now + i * 0.2;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.linearRampToValueAtTime(0.14, t + 0.008);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t); osc.stop(t + 1.0);
       });
 
     } else if (index === 2) {
-      // IELTS — взлёт вверх, как "WOW!" (fast ascending sweep)
+      // IELTS — "WOW!" широкий взлёт с эхом
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(260, now);
-      osc.frequency.exponentialRampToValueAtTime(980, now + 0.16);
-      osc.frequency.exponentialRampToValueAtTime(680, now + 0.28);
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(1100, now + 0.22);
+      osc.frequency.exponentialRampToValueAtTime(700, now + 0.5);
+      osc.frequency.exponentialRampToValueAtTime(500, now + 0.9);
       gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(0.2, now + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+      gain.gain.linearRampToValueAtTime(0.2, now + 0.05);
+      gain.gain.setValueAtTime(0.18, now + 0.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
       osc.connect(gain).connect(ctx.destination);
-      osc.start(now); osc.stop(now + 0.42);
+      osc.start(now); osc.stop(now + 1.1);
 
     } else if (index === 3) {
-      // Исследовать — свист с вибрато
+      // Исследовать — свист с вибрато и долгим угасанием
       const osc = ctx.createOscillator();
       const vibOsc = ctx.createOscillator();
       const vibGain = ctx.createGain();
       const gain = ctx.createGain();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(1380, now);
-      osc.frequency.linearRampToValueAtTime(1620, now + 0.12);
-      osc.frequency.linearRampToValueAtTime(1480, now + 0.42);
-      vibOsc.frequency.value = 7;
+      osc.frequency.setValueAtTime(1320, now);
+      osc.frequency.linearRampToValueAtTime(1680, now + 0.18);
+      osc.frequency.linearRampToValueAtTime(1500, now + 0.6);
+      osc.frequency.linearRampToValueAtTime(1420, now + 1.0);
+      vibOsc.frequency.value = 6;
       vibGain.gain.setValueAtTime(0, now);
-      vibGain.gain.linearRampToValueAtTime(28, now + 0.08);
+      vibGain.gain.linearRampToValueAtTime(30, now + 0.1);
+      vibGain.gain.setValueAtTime(30, now + 0.7);
+      vibGain.gain.linearRampToValueAtTime(0, now + 1.1);
       vibOsc.connect(vibGain);
       vibGain.connect(osc.frequency);
       gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(0.15, now + 0.06);
-      gain.gain.setValueAtTime(0.15, now + 0.28);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+      gain.gain.linearRampToValueAtTime(0.15, now + 0.07);
+      gain.gain.setValueAtTime(0.15, now + 0.5);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
       osc.connect(gain).connect(ctx.destination);
-      [osc, vibOsc].forEach(o => { o.start(now); o.stop(now + 0.52); });
+      [osc, vibOsc].forEach(o => { o.start(now); o.stop(now + 1.2); });
     }
   } catch(e) { /* ignore */ }
 }
