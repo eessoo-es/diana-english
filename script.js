@@ -123,27 +123,6 @@ if (stretchCanvas && dianaImg) {
     // 1 — Draw image (plain cover)
     drawCover();
 
-    // 2 — Radial zoom smear (circular, from Diana's face outward)
-    if (s > 0.004) {
-      const cx = cw * 0.33;
-      const cy = ch * 0.48; // below chin so face stays sharp
-      const steps = 10;
-      const zoomStr = edgeSpeaking ? 0.05 : 0.09;
-      for (let i = 1; i <= steps; i++) {
-        const f   = i / steps;
-        const fe  = Math.pow(f, 1.8);          // ease-in: slow near center, accelerates outward
-        const zoom  = 1 + s * fe * zoomStr;
-        const alpha = (1 - f) * 0.38 * s;
-        ctx.globalAlpha = alpha;
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.scale(zoom, zoom);
-        ctx.translate(-cx, -cy);
-        ctx.drawImage(dianaImg, coverDx, coverDy, coverDw, coverDh);
-        ctx.restore();
-      }
-      ctx.globalAlpha = 1;
-    }
 
     requestAnimationFrame(render);
   }
