@@ -145,38 +145,42 @@ body {
 .prono-textarea:focus { border-color: #bbb; }
 .prono-textarea::placeholder { color: var(--muted); }
 
-.input-actions {
+.btn-listen {
   position: absolute;
   bottom: 8px;
   right: 8px;
-  display: flex;
-  gap: 6px;
+  padding: 8px 18px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font);
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s;
+  line-height: normal;
 }
+.btn-listen:hover { background: #222; }
+.btn-listen:active { opacity: 0.85; }
+.btn-listen:disabled { background: #aaa; cursor: not-allowed; }
 
-.icon-btn {
-  width: 36px;
-  height: 36px;
+.btn-random {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  border: 1px solid var(--input-border);
-  background: #fff;
-  color: var(--text);
+  gap: 6px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--font);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.12s, color 0.15s;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
 }
-.icon-btn:hover { background: #f3f3f1; border-color: #c4c4c0; }
-.icon-btn:active { transform: scale(0.94); }
-.icon-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
-.icon-btn--primary {
-  background: #000;
-  border-color: #000;
-  color: #fff;
-}
-.icon-btn--primary:hover { background: #222; border-color: #222; }
-.icon-btn--primary:disabled { background: #aaa; border-color: #aaa; }
+.btn-random:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+.btn-random:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* Result — fixed height so card doesn't jump */
 .prono-result {
@@ -331,7 +335,7 @@ body {
 
 .programs-panel {
   background: var(--card-bg);
-  border-radius: 26px;
+  border-radius: 8px;
   padding: 56px;
 }
 
@@ -349,7 +353,7 @@ body {
 .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: 4px;
 }
 
 .service-card {
@@ -380,10 +384,17 @@ body {
   color: #4a3b1e;
 }
 
+.card-emojis {
+  font-size: 18px;
+  line-height: 1;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
 .service-card h3 {
   font-size: 16px;
   font-weight: 400;
-  color: var(--text);
+  color: var(--muted);
   margin-bottom: 12px;
 }
 
@@ -506,6 +517,21 @@ body {
   transition: background 0.15s;
 }
 .tg-btn:hover { background: #222; }
+
+/* ── EMOJI PARTICLES ── */
+@keyframes emojiFloat {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.4); opacity: 0; }
+}
+.emoji-particle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 22px;
+  line-height: 1;
+  animation: emojiFloat 0.75s ease-out forwards;
+  z-index: 9999;
+  user-select: none;
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {

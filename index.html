@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=12" />
+  <link rel="stylesheet" href="style.css?v=13" />
 </head>
 <body>
 
@@ -42,21 +42,7 @@
             class="prono-textarea"
             placeholder="For ex.: comfortable, I'd rather not..."
           ></textarea>
-          <div class="input-actions">
-            <button class="icon-btn" id="randomBtn" onclick="speakRandom()" aria-label="Случайная фраза" title="Случайная фраза">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <polyline points="16 3 21 3 21 8"/>
-                <path d="M4 20l7-7M21 3l-7 7"/>
-                <polyline points="4 4 9 4 9 9"/>
-                <path d="M15 15l6 6"/>
-              </svg>
-            </button>
-            <button class="icon-btn icon-btn--primary" id="listenBtn" onclick="speakPhrase()" aria-label="Слушать" title="Слушать">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="6 4 20 12 6 20 6 4"/>
-              </svg>
-            </button>
-          </div>
+          <button class="btn-listen" id="listenBtn" onclick="speakPhrase()">Слушать</button>
         </div>
 
         <div class="prono-result" id="pronoResult">
@@ -71,6 +57,15 @@
             </svg>
             Powered by my voice
           </div>
+          <button class="btn-random" id="randomBtn" onclick="speakRandom()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polyline points="16 3 21 3 21 8"/>
+              <path d="M4 20l7-7M21 3l-7 7"/>
+              <polyline points="4 4 9 4 9 9"/>
+              <path d="M15 15l6 6"/>
+            </svg>
+            Surprise me
+          </button>
         </div>
       </div>
 
@@ -168,19 +163,23 @@
         <p class="services-intro">Almost always, my work begins not with the question "What is your level?", but with the question <span class="hl">"Why do you need a language and what place do you want it to take in your life?"</span></p>
       </div>
       <div class="services-grid">
-        <div class="service-card">
+        <div class="service-card" data-emojis="❤️🏠🌸">
+          <p class="card-emojis">❤️🏠🌸</p>
           <h3>Жить / Life</h3>
           <p>Для путешествий, общения, переезда и повседневной уверенности в языке</p>
         </div>
-        <div class="service-card">
+        <div class="service-card" data-emojis="💼👔🧑‍💻👩‍💻">
+          <p class="card-emojis">💼👔🧑‍💻👩‍💻</p>
           <h3>Работать / Work</h3>
           <p>Для встреч, переговоров, презентаций, интервью и международных команд</p>
         </div>
-        <div class="service-card">
+        <div class="service-card" data-emojis="📝✏️🎯">
+          <p class="card-emojis">📝✏️🎯</p>
           <h3>Сдать IELTS</h3>
           <p>Конкретный результат и системная подготовка</p>
         </div>
-        <div class="service-card">
+        <div class="service-card" data-emojis="🔭📖💡">
+          <p class="card-emojis">🔭📖💡</p>
           <h3>Исследовать / Explore</h3>
           <p>Собственный подход к изучению языка и желание встроить его в свою жизнь</p>
         </div>
@@ -207,6 +206,6 @@
     const ELEVENLABS_API_KEY = "sk_c0e678b619960910cc8ff6af7e4b3f538d8031aeb59896e1";
     const ELEVENLABS_VOICE_ID = "QOJJ0uzf7cB0qm9cW5nO";
   </script>
-  <script src="script.js?v=9"></script>
+  <script src="script.js?v=10"></script>
 </body>
 </html>

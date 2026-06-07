@@ -138,15 +138,18 @@ function hoverSound() {
   } catch (e) { /* ignore */ }
 }
 
-// Attach hover sound to interactive elements
+// Attach hover sound to interactive elements + emoji explosions
 function attachHoverSounds() {
   const sel = ".place-item, .service-card, #listenBtn, #randomBtn, .start-tg";
   document.querySelectorAll(sel).forEach((el) => {
     el.addEventListener("mouseenter", hoverSound);
   });
+  document.querySelectorAll(".service-card").forEach((card) => {
+    card.addEventListener("mouseenter", () => spawnEmojis(card));
+  });
 }
 
-// ── Intro: cycle header text through random languages for ~5s ──
+// ── Intro: cycle ALL page text through random languages for 2s ──
 const NAME_VARIANTS = [
   "Диана Терещенко", "Diana Tereshchenko", "戴安娜·捷列先科",
   "ダイアナ・テレシチェンコ", "다이애나 테레셴코", "ديانا تيريشينكو",
@@ -173,7 +176,24 @@ const ROLE_EN = [
   "Professora de inglês · Coach de idiomas",
 ];
 
+// Unicode ranges for visual scramble
+const UNICODE_RANGES = [
+  [0x4E00, 0x9FFF],  // CJK
+  [0x0600, 0x06FF],  // Arabic
+  [0x3040, 0x309F],  // Hiragana
+  [0xAC00, 0xD7AF],  // Korean
+  [0x0400, 0x044F],  // Cyrillic
+];
+
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function scrambleText(text) {
+  const [lo, hi] = UNICODE_RANGES[Math.floor(Math.random() * UNICODE_RANGES.length)];
+  return Array.from(text).map(c =>
+    c === ' ' || c === '\n' || c === '·' ? c :
+    String.fromCodePoint(lo + Math.floor(Math.random() * (hi - lo)))
+  ).join('');
+}
 
 function runIntro() {
   const cols = document.querySelectorAll(".site-header .header-col");
@@ -183,7 +203,26 @@ function runIntro() {
   const rightName = cols[1].querySelector(".header-name");
   const rightRole = cols[1].querySelector(".header-title");
 
-  // Capture final values to restore exactly
+  // Collect extra text-only elements across the page
+  const extraSelectors = [
+    ".prono-title", ".prono-desc",
+    ".about .col p",
+    ".current .col",
+    ".services-intro",
+    ".service-card h3", ".service-card > p:not(.card-emojis)",
+    ".start-title", ".start-sub",
+  ];
+  const extraEls = [];
+  const extraOriginals = [];
+  extraSelectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      if (el.children.length === 0) {
+        extraEls.push(el);
+        extraOriginals.push(el.textContent);
+      }
+    });
+  });
+
   const finals = {
     leftName: leftName.textContent,
     leftRole: leftRole.textContent,
@@ -191,11 +230,11 @@ function runIntro() {
     rightRole: rightRole.textContent,
   };
 
-  const targets = [leftName, leftRole, rightName, rightRole];
-  targets.forEach((el) => { el.style.transition = "opacity 0.12s ease"; });
+  const headerTargets = [leftName, leftRole, rightName, rightRole];
+  headerTargets.forEach((el) => { el.style.transition = "opacity 0.12s ease"; });
 
-  const DURATION = 3000;
-  const STEP = 140;
+  const DURATION = 2000;
+  const STEP = 110;
   const start = performance.now();
 
   const timer = setInterval(() => {
@@ -206,16 +245,46 @@ function runIntro() {
       leftRole.textContent  = finals.leftRole;
       rightName.textContent = finals.rightName;
       rightRole.textContent = finals.rightRole;
-      targets.forEach((el) => { el.style.opacity = "1"; });
+      headerTargets.forEach((el) => { el.style.opacity = "1"; });
+      extraEls.forEach((el, i) => { el.textContent = extraOriginals[i]; el.style.opacity = "1"; });
       return;
     }
-    // Flicker shuffle
     leftName.textContent  = pick(NAME_VARIANTS);
     rightName.textContent = pick(NAME_VARIANTS);
     leftRole.textContent  = pick(ROLE_RU);
     rightRole.textContent = pick(ROLE_EN);
-    targets.forEach((el) => { el.style.opacity = (0.55 + Math.random() * 0.45).toFixed(2); });
+    headerTargets.forEach((el) => { el.style.opacity = (0.55 + Math.random() * 0.45).toFixed(2); });
+
+    extraEls.forEach((el, i) => {
+      el.textContent = scrambleText(extraOriginals[i]);
+      el.style.opacity = (0.3 + Math.random() * 0.5).toFixed(2);
+    });
   }, STEP);
+}
+
+// ── Emoji explosion on service card hover ──
+function spawnEmojis(card) {
+  const raw = card.dataset.emojis || "";
+  const emojis = [...new Intl.Segmenter().segment(raw)].map(s => s.segment);
+  if (!emojis.length) return;
+  const rect = card.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height * 0.6;
+
+  emojis.forEach((emoji, i) => {
+    const el = document.createElement("span");
+    el.className = "emoji-particle";
+    el.textContent = emoji;
+    const dx = (Math.random() - 0.5) * 140;
+    const dy = -(50 + Math.random() * 90);
+    el.style.left = cx + "px";
+    el.style.top  = cy + "px";
+    el.style.setProperty("--dx", dx + "px");
+    el.style.setProperty("--dy", dy + "px");
+    el.style.animationDelay = (i * 60) + "ms";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 900 + i * 60);
+  });
 }
 
 // Bootstrap (works whether or not DOMContentLoaded already fired)
