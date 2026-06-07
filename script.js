@@ -125,7 +125,7 @@ if (stretchCanvas && dianaImg) {
     // 2 — Radial zoom smear (circular, original intensity)
     if (s > 0.004) {
       const cx = cw * 0.33;
-      const cy = ch * 0.48;
+      const cy = ch * 0.38;
       const steps = 10;
       const zoomStr = edgeSpeaking ? 0.06 : 0.12;
       for (let i = 1; i <= steps; i++) {
