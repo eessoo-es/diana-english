@@ -330,13 +330,13 @@ body {
 
 /* ── PROGRAMS PANEL ── */
 .programs {
-  padding: 130px var(--page-pad) 0;
+  padding: 130px 8px 0;
 }
 
 .programs-panel {
   background: var(--card-bg);
   border-radius: 8px;
-  padding: 56px;
+  padding: 56px calc(var(--page-pad) - 8px);
 }
 
 .services-intro-row {
@@ -362,26 +362,19 @@ body {
   padding: 18px 18px 20px;
   min-height: 139px;
   background: #fff;
+  user-select: none;
+  cursor: default;
+  position: relative;
+  z-index: 2;
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
               box-shadow 0.35s ease,
-              border-color 0.35s ease,
-              background 0.35s ease;
+              border-color 0.35s ease;
 }
 
 .service-card:hover {
   transform: translateY(-4px);
-  border-color: #e0ddd6;
-  background: radial-gradient(120% 120% at 50% 0%, #fbf7f0 0%, #ffffff 60%);
-  box-shadow: 0 12px 28px -12px rgba(120, 90, 40, 0.18);
-}
-
-.service-card h3,
-.service-card p {
-  transition: color 0.35s ease;
-}
-
-.service-card:hover h3 {
-  color: #4a3b1e;
+  border-color: #e4e4e4;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.10);
 }
 
 .service-card h3 {
@@ -526,7 +519,7 @@ body {
   font-size: 22px;
   line-height: 1;
   animation: emojiFloat 0.75s ease-out forwards;
-  z-index: 9999;
+  z-index: 1;
   user-select: none;
 }
 

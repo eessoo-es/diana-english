@@ -287,8 +287,8 @@ function spawnOneEmoji(card) {
   if (!emojis.length) return;
   const emoji = emojis[Math.floor(Math.random() * emojis.length)];
   const rect = card.getBoundingClientRect();
-  const cx = rect.left + rect.width * (0.2 + Math.random() * 0.6);
-  const cy = rect.bottom - 4;
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
   const el = document.createElement("span");
   el.className = "emoji-particle";
   el.textContent = emoji;
