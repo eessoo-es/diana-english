@@ -120,12 +120,8 @@ if (stretchCanvas && dianaImg) {
       s = edgeIntensity * pulse;
     }
 
-    // 1 — Draw: wave warp when active, plain cover when idle
-    if (s > 0.02) {
-      drawWave(t, s);
-    } else {
-      drawCover();
-    }
+    // 1 — Draw image (plain cover)
+    drawCover();
 
     // 2 — Edge smear (stronger than before)
     if (s > 0.004) {
