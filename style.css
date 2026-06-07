@@ -644,7 +644,7 @@ body {
 
   .prono-section { padding-top: 40px; }
   .about { padding-top: 40px; }
-  .places-wrap { padding-top: 44px; padding-bottom: 44px; }
+  .places-wrap { padding-top: 44px; padding-bottom: 44px; padding-left: 4px; padding-right: 4px; }
   .current { padding-top: 0; }
 
   .prono-card { grid-template-columns: 1fr; height: auto; margin: 0 8px; border-radius: 16px; }
@@ -660,7 +660,7 @@ body {
   .services-intro-row { margin-bottom: 24px; }
   .start-block { padding: 40px 0 20px; }
 
-  .programs { padding-top: 64px; padding-left: 8px; padding-right: 8px; }
+  .programs { padding-top: 64px; padding-left: 4px; padding-right: 4px; }
   .programs-panel { border-radius: 8px; padding: calc(var(--page-pad) - 8px); }
   .start-block { padding: 56px 0 48px; }
 
