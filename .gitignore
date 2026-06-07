@@ -12,3 +12,10 @@ grass-bg.png
 0ef300ab-5a58-46bf-99b0-223953536f84.png
 20dc7aab-03cf-41c5-b7d5-bad91cb1c47e.png
 565212671_18532128550060684_2400951597797501673_n.jpg
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
