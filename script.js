@@ -1,81 +1,153 @@
-// ── Photo edge-stretch effect (MeshTransmission-style pixel smear) ──
+// ── Photo effect: wave warp + chromatic aberration ──
 const photoWrapEl = document.getElementById('photoWrap');
 const stretchCanvas = document.getElementById('stretchCanvas');
 const dianaImg = document.getElementById('dianaImg');
 
-let edgeIntensity = 0;      // current smoothed intensity 0..1
-let edgeTarget = 0;         // target intensity
-let edgeSpeaking = false;   // audio playing → pulsing
+let edgeIntensity = 0;
+let edgeTarget = 0;
+let edgeSpeaking = false;
 let imgReady = false;
 let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+// Cover geometry — computed once, reused by wave renderer
+let coverDx = 0, coverDy = 0, coverDw = 0, coverDh = 0, coverScale = 1;
 
 if (stretchCanvas && dianaImg) {
   const ctx = stretchCanvas.getContext('2d');
 
   function sizeCanvas() {
     const r = photoWrapEl.getBoundingClientRect();
-    stretchCanvas.width = Math.round(r.width * dpr);
+    stretchCanvas.width  = Math.round(r.width  * dpr);
     stretchCanvas.height = Math.round(r.height * dpr);
   }
 
-  // Draw image "cover" into the canvas
-  function drawCover() {
+  function computeCover() {
     const cw = stretchCanvas.width, ch = stretchCanvas.height;
     const iw = dianaImg.naturalWidth, ih = dianaImg.naturalHeight;
     if (!iw || !ih) return;
-    const scale = Math.max(cw / iw, ch / ih);
-    const dw = iw * scale, dh = ih * scale;
-    const dx = (cw - dw) / 2;
-    const dy = (ch - dh) * 0.15; // match object-position: center 15%
-    ctx.drawImage(dianaImg, dx, dy, dw, dh);
+    coverScale = Math.max(cw / iw, ch / ih);
+    coverDw = iw * coverScale;
+    coverDh = ih * coverScale;
+    coverDx = (cw - coverDw) / 2;
+    coverDy = (ch - coverDh) * 0.15;
+  }
+
+  function drawCover() {
+    computeCover();
+    ctx.drawImage(dianaImg, coverDx, coverDy, coverDw, coverDh);
+  }
+
+  // Draw image strip-by-strip with horizontal sine-wave displacement
+  function drawWave(t, intensity) {
+    computeCover();
+    const cw = stretchCanvas.width, ch = stretchCanvas.height;
+    const iw = dianaImg.naturalWidth, ih = dianaImg.naturalHeight;
+    if (!iw || !ih) return;
+
+    const amp   = intensity * 22;   // max horizontal px shift
+    const freq  = 28;               // wave spatial period in canvas px
+    const speed = 7;                // wave travel speed
+    const stripH = 4;               // canvas rows per strip
+
+    for (let dy = 0; dy < ch; dy += stripH) {
+      const wave1 = Math.sin(dy / freq + t * speed) * amp;
+      const wave2 = Math.sin(dy / (freq * 0.6) + t * speed * 1.4 + 1.2) * amp * 0.4;
+      const xOff  = wave1 + wave2;
+
+      // Map canvas row back to source image row
+      const srcY = (dy - coverDy) / coverScale;
+      const srcH = stripH / coverScale;
+      if (srcY + srcH < 0 || srcY > ih) continue; // outside image
+
+      const clampedSrcY = Math.max(0, srcY);
+      const clampedSrcH = Math.min(srcH, ih - clampedSrcY);
+      const destH = clampedSrcH * coverScale;
+      const destY = coverDy + clampedSrcY * coverScale;
+
+      ctx.drawImage(
+        dianaImg,
+        0, clampedSrcY, iw, clampedSrcH,
+        coverDx + xOff, destY, coverDw, destH
+      );
+    }
+  }
+
+  // Chromatic aberration: shift R channel right, B channel left (pixel level)
+  function applyCA(intensity) {
+    const cw = stretchCanvas.width, ch = stretchCanvas.height;
+    const shift = Math.round(intensity * 18);
+    if (shift < 1) return;
+
+    const imgData = ctx.getImageData(0, 0, cw, ch);
+    const src = imgData.data;
+    const out = new Uint8ClampedArray(src);
+
+    for (let y = 0; y < ch; y++) {
+      const row = y * cw;
+      for (let x = 0; x < cw; x++) {
+        const i  = (row + x) * 4;
+        const ri = (row + Math.min(cw - 1, x + shift)) * 4;
+        const bi = (row + Math.max(0,      x - shift)) * 4;
+        out[i]     = src[ri];      // R from right
+        out[i + 2] = src[bi + 2]; // B from left
+        // G and A stay from center (already copied via new Uint8ClampedArray(src))
+      }
+    }
+    ctx.putImageData(new ImageData(out, cw, ch), 0, 0);
   }
 
   function render() {
     if (!imgReady) { requestAnimationFrame(render); return; }
-    // Keep canvas backing store in sync with its displayed size
+
     const r = photoWrapEl.getBoundingClientRect();
-    const wantW = Math.max(1, Math.round(r.width * dpr));
+    const wantW = Math.max(1, Math.round(r.width  * dpr));
     const wantH = Math.max(1, Math.round(r.height * dpr));
     if (stretchCanvas.width !== wantW || stretchCanvas.height !== wantH) {
-      stretchCanvas.width = wantW;
+      stretchCanvas.width  = wantW;
       stretchCanvas.height = wantH;
     }
     const cw = stretchCanvas.width, ch = stretchCanvas.height;
     ctx.clearRect(0, 0, cw, ch);
-    drawCover();
 
-    // Smooth intensity toward target; add pulse while speaking
-    edgeTarget = edgeSpeaking ? 1 : (edgeTarget);
-    edgeIntensity += (edgeTarget - edgeIntensity) * 0.08;
+    // Smooth intensity
+    edgeIntensity += (edgeTarget - edgeIntensity) * 0.07;
 
+    const t = performance.now() / 1000;
     let s = edgeIntensity;
     if (edgeSpeaking) {
-      // pulsing wave while audio plays
-      const t = performance.now() / 1000;
-      s = edgeIntensity * (0.65 + 0.35 * (0.5 + 0.5 * Math.sin(t * 6)));
+      // layered pulse: fast shimmer + slow swell
+      const pulse = 0.55 + 0.25 * Math.sin(t * 5.5) + 0.2 * Math.sin(t * 2.3 + 0.8);
+      s = edgeIntensity * pulse;
     }
 
+    // 1 — Draw: wave warp when active, plain cover when idle
+    if (s > 0.02) {
+      drawWave(t, s);
+    } else {
+      drawCover();
+    }
+
+    // 2 — Edge smear (stronger than before)
     if (s > 0.004) {
-      const strip = Math.max(2, Math.round(Math.min(cw, ch) * 0.06));
-      const push = strip * s * 3.2;
-      ctx.globalAlpha = Math.min(1, 0.55 + s * 0.45);
-      // Left — smear leftmost strip outward
-      ctx.drawImage(stretchCanvas, 0, 0, strip, ch, -push, 0, strip + push, ch);
-      // Right
-      ctx.drawImage(stretchCanvas, cw - strip, 0, strip, ch, cw - strip, 0, strip + push, ch);
-      // Top
-      ctx.drawImage(stretchCanvas, 0, 0, cw, strip, 0, -push, cw, strip + push);
-      // Bottom
-      ctx.drawImage(stretchCanvas, 0, ch - strip, cw, strip, 0, ch - strip, cw, strip + push);
+      const strip = Math.max(2, Math.round(Math.min(cw, ch) * 0.08));
+      const push  = strip * s * 5;
+      ctx.globalAlpha = Math.min(1, 0.5 + s * 0.5);
+      ctx.drawImage(stretchCanvas, 0,        0,        strip, ch, -push,       0,        strip + push, ch);
+      ctx.drawImage(stretchCanvas, cw-strip, 0,        strip, ch, cw-strip,    0,        strip + push, ch);
+      ctx.drawImage(stretchCanvas, 0,        0,        cw,    strip, 0,        -push,    cw, strip + push);
+      ctx.drawImage(stretchCanvas, 0,        ch-strip, cw,    strip, 0,        ch-strip, cw, strip + push);
       ctx.globalAlpha = 1;
     }
+
+    // 3 — Chromatic aberration (only while speaking)
+    if (edgeSpeaking && s > 0.05) {
+      applyCA(s);
+    }
+
     requestAnimationFrame(render);
   }
 
-  function onReady() {
-    imgReady = true;
-    sizeCanvas();
-  }
+  function onReady() { imgReady = true; sizeCanvas(); }
   if (dianaImg.complete && dianaImg.naturalWidth) onReady();
   else dianaImg.addEventListener('load', onReady);
 
@@ -84,7 +156,7 @@ if (stretchCanvas && dianaImg) {
     sizeCanvas();
   });
 
-  photoWrapEl.addEventListener('mouseenter', () => { if (!edgeSpeaking) edgeTarget = 0.7; });
+  photoWrapEl.addEventListener('mouseenter', () => { if (!edgeSpeaking) edgeTarget = 0.6; });
   photoWrapEl.addEventListener('mouseleave', () => { if (!edgeSpeaking) edgeTarget = 0; });
 
   render();
