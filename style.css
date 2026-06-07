@@ -266,7 +266,12 @@ body {
 }
 
 .place-head {
-  display: none; /* desktop: показываем только label */
+  display: inline-flex;
+  align-items: center;
+}
+/* On desktop hide the emoji inside place-head — it lives in the tooltip */
+.place-head .place-emoji {
+  display: none;
 }
 
 .place-item {
@@ -585,7 +590,7 @@ body {
     align-items: center;
     gap: 8px;
   }
-  .place-head .place-emoji { font-size: 20px; }
+  .place-head .place-emoji { display: inline; font-size: 20px; }
   .place-head .place-label {
     font-size: 15px;
     font-weight: 400;
