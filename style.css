@@ -523,19 +523,47 @@ body {
   user-select: none;
 }
 
+/* ── FLOATING TELEGRAM BUTTON ── */
+.tg-float {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  color: #fff;
+  font-size: 15px;
+  font-family: var(--font);
+  font-weight: 400;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 100px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  white-space: nowrap;
+  z-index: 200;
+  transition: background 0.15s, transform 0.15s;
+}
+.tg-float:hover { background: #222; transform: translateX(-50%) translateY(-2px); }
+.tg-float:active { transform: translateX(-50%) scale(0.97); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   :root { --page-pad: 24px; }
 
+  /* Hide English column everywhere */
+  .site-header .header-col:nth-child(2),
+  .two-col > *:nth-child(2) { display: none; }
+
   .site-header { grid-template-columns: 1fr; gap: 20px; padding-top: 24px; }
-  .prono-card { grid-template-columns: 1fr; }
+  .prono-card { grid-template-columns: 1fr; height: auto; }
   .prono-photo-wrap { min-height: 260px; border-radius: 20px 20px 0 0; }
   .prono-form { padding: 24px 24px 20px; }
   .two-col { grid-template-columns: 1fr; gap: 24px; }
   .services-grid { grid-template-columns: 1fr 1fr; }
-  .marquee-track span { font-size: 22px; padding: 0 20px; }
-  .booking-bubble, .booking-panel { right: 20px; bottom: 20px; }
-  .booking-panel { bottom: 78px; width: calc(100vw - 40px); }
+  .tg-float { display: block; }
+
+  /* Space so content isn't hidden behind floating button */
+  .site-footer { padding-bottom: 88px; }
 }
 
 @media (max-width: 520px) {
