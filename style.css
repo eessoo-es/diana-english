@@ -579,14 +579,14 @@ body {
   .site-header .header-col:nth-child(2),
   .two-col > *:nth-child(2) { display: none; }
 
-  /* Header title — allow wrapping on mobile */
+  /* Header — 16px, allow wrapping */
   .header-title {
-    font-size: 13px;
+    font-size: 16px;
     height: auto;
     white-space: normal;
     overflow: visible;
   }
-  .header-name { font-size: 14px; height: auto; white-space: normal; overflow: visible; }
+  .header-name { font-size: 16px; height: auto; white-space: normal; overflow: visible; }
 
   .site-header { grid-template-columns: 1fr; gap: 4px; padding-top: 20px; }
 
@@ -613,7 +613,7 @@ body {
   }
   .place-head .place-emoji { display: inline; font-size: 20px; }
   .place-head .place-label {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--text);
     white-space: normal;
@@ -633,7 +633,7 @@ body {
   }
   /* Hide redundant emoji inside card on mobile */
   .place-card .place-emoji { display: none; }
-  .place-text { font-size: 13px; color: var(--muted); }
+  .place-text { font-size: 16px; color: var(--muted); }
 
   /* Hide desktop label (shown via place-head instead) */
   .place-item > .place-label { display: none; }
