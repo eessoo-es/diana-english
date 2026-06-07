@@ -355,7 +355,7 @@ body {
 .programs-panel {
   background: var(--card-bg);
   border-radius: 8px;
-  padding: 48px;
+  padding: 40px;
 }
 
 .services-intro-row {
