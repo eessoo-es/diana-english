@@ -305,7 +305,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  width: 200px;
+  width: 230px;
   white-space: normal;
   pointer-events: none;
   opacity: 0;
@@ -317,6 +317,15 @@ body {
 .place-item:hover .place-card {
   opacity: 1;
   transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* USA — first item: left-align tooltip so it doesn't clip */
+.place-item:first-child .place-card {
+  left: 0;
+  transform: translateY(6px) scale(0.95);
+}
+.place-item:first-child:hover .place-card {
+  transform: translateY(0) scale(1);
 }
 
 .place-emoji {
