@@ -244,7 +244,7 @@ body {
 
 /* ── PLACES ── */
 .places-wrap {
-  padding: 88px var(--page-pad) 0;
+  padding: 100px var(--page-pad);
   overflow: visible;
 }
 
@@ -344,7 +344,7 @@ body {
 
 /* ── CURRENT ── */
 .current {
-  padding: 130px var(--page-pad) 0;
+  padding: 100px var(--page-pad) 0;
 }
 
 /* ── PROGRAMS PANEL ── */
