@@ -661,7 +661,7 @@ body {
   .start-block { padding: 40px 0 20px; }
 
   .programs { padding-top: 64px; padding-left: 4px; padding-right: 4px; }
-  .programs-panel { border-radius: 8px; padding: 12px calc(var(--page-pad) - 4px); }
+  .programs-panel { border-radius: 8px; padding: 16px calc(var(--page-pad) - 4px); }
   .start-block { padding: 56px 0 48px; }
 
   /* No floating TG button */
