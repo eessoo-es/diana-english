@@ -166,8 +166,22 @@ if (stretchCanvas && dianaImg) {
 function startEdgeStretch() { edgeSpeaking = true; edgeTarget = 1; }
 function stopEdgeStretch()  { edgeSpeaking = false; edgeTarget = 0; }
 
-// ── Soft tactile click sound (WebAudio, no file) ──
+// ── WebAudio context — warm up on first interaction ──
 let audioCtx = null;
+
+function ensureAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+// Pre-warm on first mousemove/touch so context is ready before hover sounds
+['mousemove', 'touchstart', 'pointerdown'].forEach(evt =>
+  document.addEventListener(evt, ensureAudioCtx, { once: true, passive: true })
+);
 function clickSound() {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
