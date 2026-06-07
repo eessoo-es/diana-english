@@ -516,9 +516,9 @@ body {
 .emoji-particle {
   position: fixed;
   pointer-events: none;
-  font-size: 22px;
+  font-size: 32px;
   line-height: 1;
-  animation: emojiFloat 0.75s ease-out forwards;
+  animation: emojiFloat 0.9s ease-out forwards;
   z-index: 1;
   user-select: none;
 }

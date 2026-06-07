@@ -147,8 +147,11 @@ function attachHoverSounds() {
   document.querySelectorAll(".service-card").forEach((card) => {
     let emojiTimer = null;
     card.addEventListener("mouseenter", () => {
-      spawnOneEmoji(card);
-      emojiTimer = setInterval(() => spawnOneEmoji(card), 160);
+      for (let i = 0; i < 3; i++) spawnOneEmoji(card);
+      emojiTimer = setInterval(() => {
+        spawnOneEmoji(card);
+        spawnOneEmoji(card);
+      }, 80);
     });
     card.addEventListener("mouseleave", () => {
       clearInterval(emojiTimer);
@@ -294,8 +297,8 @@ function spawnOneEmoji(card) {
   el.textContent = emoji;
   el.style.left = cx + "px";
   el.style.top  = cy + "px";
-  el.style.setProperty("--dx", ((Math.random() - 0.5) * 100) + "px");
-  el.style.setProperty("--dy", -(50 + Math.random() * 80) + "px");
+  el.style.setProperty("--dx", ((Math.random() - 0.5) * 180) + "px");
+  el.style.setProperty("--dy", -(80 + Math.random() * 120) + "px");
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 800);
 }
