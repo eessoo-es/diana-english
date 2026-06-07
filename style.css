@@ -563,11 +563,16 @@ body {
   .site-header .header-col:nth-child(2),
   .two-col > *:nth-child(2) { display: none; }
 
-  /* Header title — fit single line */
-  .header-title { font-size: 14px; }
-  .header-name  { font-size: 15px; }
+  /* Header title — allow wrapping on mobile */
+  .header-title {
+    font-size: 13px;
+    height: auto;
+    white-space: normal;
+    overflow: visible;
+  }
+  .header-name { font-size: 14px; height: auto; white-space: normal; overflow: visible; }
 
-  .site-header { grid-template-columns: 1fr; gap: 8px; padding-top: 20px; }
+  .site-header { grid-template-columns: 1fr; gap: 4px; padding-top: 20px; }
 
   /* Places — vertical list */
   .places-wrap { overflow: hidden; }
@@ -624,13 +629,23 @@ body {
 
   .prono-card { grid-template-columns: 1fr; height: auto; margin: 0 8px; border-radius: 16px; }
   .prono-photo-wrap { min-height: 260px; border-radius: 14px 14px 0 0; }
-  .prono-form { padding: 24px 20px 20px; }
+  .prono-form { padding: 20px 20px 16px; }
+  /* Remove auto-push so footer doesn't create huge gap */
+  .prono-footer { margin-top: 8px; }
+  .prono-result { height: 36px; }
+
   .two-col { grid-template-columns: 1fr; gap: 24px; }
   .services-grid { grid-template-columns: 1fr 1fr; }
+  .service-card { min-height: 0; padding: 16px; }
+  .services-intro-row { margin-bottom: 24px; }
+  .start-block { padding: 40px 0 20px; }
+
   .programs { padding-top: 64px; padding-left: 8px; padding-right: 8px; }
-  .programs-panel { padding: 32px calc(var(--page-pad) - 8px); }
-  .tg-float { display: block; }
-  .site-footer { padding-bottom: 88px; }
+  .programs-panel { padding: 24px calc(var(--page-pad) - 8px); }
+
+  /* No floating TG button */
+  .tg-float { display: none; }
+  .site-footer { padding-bottom: 40px; }
 }
 
 @media (max-width: 520px) {
