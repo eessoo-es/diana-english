@@ -50,10 +50,6 @@ body {
   font-weight: 400;
   color: var(--text);
   line-height: 22px;
-  height: 22px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* ── PRONUNCIATION CARD ── */
@@ -541,20 +537,26 @@ body {
   box-shadow: 0 4px 20px rgba(0,0,0,0.18);
   white-space: nowrap;
   z-index: 200;
-  transition: background 0.15s, transform 0.15s;
+  transition: background 0.15s, transform 0.15s, opacity 0.3s;
 }
 .tg-float:hover { background: #222; transform: translateX(-50%) translateY(-2px); }
 .tg-float:active { transform: translateX(-50%) scale(0.97); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  :root { --page-pad: 24px; }
+  :root { --page-pad: 20px; }
 
   /* Hide English column everywhere */
   .site-header .header-col:nth-child(2),
   .two-col > *:nth-child(2) { display: none; }
 
   .site-header { grid-template-columns: 1fr; gap: 20px; padding-top: 24px; }
+
+  /* Places — wrap into rows */
+  .places-track { flex-wrap: wrap; justify-content: flex-start; gap: 12px 0; white-space: normal; }
+  .dot { display: none; }
+  .place-label { font-size: 22px; }
+
   .prono-card { grid-template-columns: 1fr; height: auto; }
   .prono-photo-wrap { min-height: 260px; border-radius: 20px 20px 0 0; }
   .prono-form { padding: 24px 24px 20px; }

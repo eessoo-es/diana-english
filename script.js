@@ -330,9 +330,9 @@ function runIntro() {
 
   const finals = {
     leftName: leftName.textContent,
-    leftRole: leftRole.textContent,
+    leftRoleHTML: leftRole.innerHTML,
     rightName: rightName.textContent,
-    rightRole: rightRole.textContent,
+    rightRoleHTML: rightRole.innerHTML,
   };
 
   const headerTargets = [leftName, leftRole, rightName, rightRole];
@@ -347,9 +347,9 @@ function runIntro() {
     if (elapsed >= DURATION) {
       clearInterval(timer);
       leftName.textContent  = finals.leftName;
-      leftRole.textContent  = finals.leftRole;
+      leftRole.innerHTML    = finals.leftRoleHTML;
       rightName.textContent = finals.rightName;
-      rightRole.textContent = finals.rightRole;
+      rightRole.innerHTML   = finals.rightRoleHTML;
       headerTargets.forEach((el) => { el.style.opacity = "1"; });
       extraEls.forEach((el, i) => { el.innerHTML = extraOriginals[i]; el.style.opacity = "1"; });
       return;
@@ -388,10 +388,23 @@ function spawnOneEmoji(card) {
   setTimeout(() => el.remove(), 800);
 }
 
+// Hide floating TG button when start-block is visible
+function initTgFloat() {
+  const btn = document.querySelector(".tg-float");
+  const target = document.querySelector(".start-block");
+  if (!btn || !target) return;
+  const obs = new IntersectionObserver(([entry]) => {
+    btn.style.opacity = entry.isIntersecting ? "0" : "1";
+    btn.style.pointerEvents = entry.isIntersecting ? "none" : "";
+  }, { threshold: 0.2 });
+  obs.observe(target);
+}
+
 // Bootstrap (works whether or not DOMContentLoaded already fired)
 function boot() {
   attachHoverSounds();
   runIntro();
+  initTgFloat();
 }
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", boot);
