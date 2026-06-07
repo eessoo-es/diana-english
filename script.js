@@ -123,21 +123,16 @@ if (stretchCanvas && dianaImg) {
     // 1 — Draw image (plain cover)
     drawCover();
 
-    // 2 — Edge smear (stronger than before)
+    // 2 — Edge smear (wider strip, original strength)
     if (s > 0.004) {
-      const strip = Math.max(2, Math.round(Math.min(cw, ch) * 0.08));
-      const push  = strip * s * 5;
-      ctx.globalAlpha = Math.min(1, 0.5 + s * 0.5);
+      const strip = Math.max(2, Math.round(Math.min(cw, ch) * 0.18));
+      const push  = strip * s * 3.2;
+      ctx.globalAlpha = Math.min(1, 0.55 + s * 0.45);
       ctx.drawImage(stretchCanvas, 0,        0,        strip, ch, -push,       0,        strip + push, ch);
       ctx.drawImage(stretchCanvas, cw-strip, 0,        strip, ch, cw-strip,    0,        strip + push, ch);
       ctx.drawImage(stretchCanvas, 0,        0,        cw,    strip, 0,        -push,    cw, strip + push);
       ctx.drawImage(stretchCanvas, 0,        ch-strip, cw,    strip, 0,        ch-strip, cw, strip + push);
       ctx.globalAlpha = 1;
-    }
-
-    // 3 — Chromatic aberration (only while speaking)
-    if (edgeSpeaking && s > 0.05) {
-      applyCA(s);
     }
 
     requestAnimationFrame(render);
