@@ -558,9 +558,9 @@ body {
   .site-header .header-col:nth-child(2),
   .two-col > *:nth-child(2) { display: none; }
 
-  /* Header title smaller to fit single line */
-  .header-title { font-size: 12px; }
-  .header-name  { font-size: 14px; }
+  /* Header title — fit single line */
+  .header-title { font-size: 14px; }
+  .header-name  { font-size: 15px; }
 
   .site-header { grid-template-columns: 1fr; gap: 8px; padding-top: 20px; }
 
@@ -612,12 +612,17 @@ body {
   /* Hide desktop label (shown via place-head instead) */
   .place-item > .place-label { display: none; }
 
-  .prono-card { grid-template-columns: 1fr; height: auto; }
-  .prono-photo-wrap { min-height: 260px; border-radius: 20px 20px 0 0; }
+  .prono-section { padding-top: 40px; }
+  .about { padding-top: 40px; }
+  .places-wrap { padding-top: 44px; }
+  .current { padding-top: 64px; }
+
+  .prono-card { grid-template-columns: 1fr; height: auto; margin: 0 8px; border-radius: 16px; }
+  .prono-photo-wrap { min-height: 260px; border-radius: 14px 14px 0 0; }
   .prono-form { padding: 24px 20px 20px; }
   .two-col { grid-template-columns: 1fr; gap: 24px; }
   .services-grid { grid-template-columns: 1fr 1fr; }
-  .programs { padding-left: 8px; padding-right: 8px; }
+  .programs { padding-top: 64px; padding-left: 8px; padding-right: 8px; }
   .programs-panel { padding: 32px calc(var(--page-pad) - 8px); }
   .tg-float { display: block; }
   .site-footer { padding-bottom: 88px; }

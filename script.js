@@ -388,16 +388,24 @@ function spawnOneEmoji(card) {
   setTimeout(() => el.remove(), 800);
 }
 
-// Hide floating TG button when start-block is visible
+// Hide floating TG button when prono section or start-block is visible
 function initTgFloat() {
   const btn = document.querySelector(".tg-float");
-  const target = document.querySelector(".start-block");
-  if (!btn || !target) return;
-  const obs = new IntersectionObserver(([entry]) => {
-    btn.style.opacity = entry.isIntersecting ? "0" : "1";
-    btn.style.pointerEvents = entry.isIntersecting ? "none" : "";
-  }, { threshold: 0.2 });
-  obs.observe(target);
+  if (!btn) return;
+  const hide = new Set();
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) hide.add(e.target);
+      else hide.delete(e.target);
+    });
+    const shouldHide = hide.size > 0;
+    btn.style.opacity = shouldHide ? "0" : "1";
+    btn.style.pointerEvents = shouldHide ? "none" : "";
+  }, { threshold: 0.15 });
+  [".prono-section", ".start-block"].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) obs.observe(el);
+  });
 }
 
 // Bootstrap (works whether or not DOMContentLoaded already fired)
