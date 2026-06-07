@@ -244,7 +244,7 @@ body {
 
 /* ── PLACES ── */
 .places-wrap {
-  padding: 100px var(--page-pad) 0;
+  padding: 120px var(--page-pad) 0;
   overflow: visible;
 }
 
@@ -344,7 +344,7 @@ body {
 
 /* ── CURRENT ── */
 .current {
-  padding: 100px var(--page-pad) 0;
+  padding: 120px var(--page-pad) 0;
 }
 
 /* ── PROGRAMS PANEL ── */
@@ -355,7 +355,7 @@ body {
 .programs-panel {
   background: var(--card-bg);
   border-radius: 8px;
-  padding: 56px calc(var(--page-pad) - 8px);
+  padding: 48px;
 }
 
 .services-intro-row {
